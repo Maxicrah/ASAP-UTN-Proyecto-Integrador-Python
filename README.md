@@ -1,5 +1,9 @@
 # CRUD de Cursos con Python, Peewee y Tkinter
 
+## Integrantes
+- Maximiliano Ramiro Flores
+- Ramiro Galvan
+
 ## Descripción
 
 Este proyecto es una aplicación de escritorio para **gestionar cursos**, desarrollada en Python usando:
