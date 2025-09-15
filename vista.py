@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from controlador import CursoControlador
 from tkinter import messagebox
-
+from tkcalendar import DateEntry
+from datetime import datetime
 
 class Ventana(tk.Frame):
     def __init__(self, master=None):
@@ -35,7 +36,7 @@ class Ventana(tk.Frame):
         self.entry_duracion.grid(row=3, column=1, sticky="ew")
         # Label Fecha
         tk.Label(self, text="Fecha").grid(row=4, column=0, sticky="w")
-        self.entry_fecha = tk.Entry(self)
+        self.entry_fecha = DateEntry(self, date_pattern="yyyy-mm-dd")
         self.entry_fecha.grid(row=4, column=1, sticky="ew")
 
     def crear_botones(self):
@@ -158,7 +159,7 @@ class Ventana(tk.Frame):
         self.entry_autor.delete(0, tk.END)
         self.entry_precio.delete(0, tk.END)
         self.entry_duracion.delete(0, tk.END)
-        self.entry_fecha.delete(0, tk.END)
+        self.entry_fecha.set_date(datetime.today().date())
     
     def vista_eliminar_curso(self):
         seleccion = self.treeview.selection()  # devuelve tupla de items seleccionados en el Treeview
@@ -199,5 +200,9 @@ class Ventana(tk.Frame):
             self.entry_precio.insert(0, valores[3])
             self.entry_duracion.delete(0, tk.END)
             self.entry_duracion.insert(0, valores[4])
-            self.entry_fecha.delete(0, tk.END)
-            self.entry_fecha.insert(0, valores[5])
+            try:
+                fecha = datetime.strptime(valores[5], "%Y-%m-%d").date()
+                self.entry_fecha.set_date(fecha)
+            except Exception:
+                # Si falla el parseo, cargo la fecha de hoy
+                self.entry_fecha.set_date(datetime.today().date())
