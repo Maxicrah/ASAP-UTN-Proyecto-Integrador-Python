@@ -104,11 +104,13 @@ class Ventana(tk.Frame):
         self.cursoControlador.crear_curso(nombreCurso, autor, precio, duracion, fecha)
 
         self.actualizar_treeview()
+        self.limpiar_campos()
     
     def limpiar_campos(self):
         self.entry_nombre_curso.delete(0, tk.END)        
         self.entry_autor.delete(0, tk.END)
         self.entry_precio.delete(0, tk.END)
+        self.entry_duracion.delete(0, tk.END)
         self.entry_duracion.delete(0, tk.END)
     
     def vista_eliminar_curso(self):
