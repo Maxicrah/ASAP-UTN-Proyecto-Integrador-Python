@@ -14,6 +14,7 @@ class Ventana(tk.Frame):
         self.crear_treeview()
         self.cursoControlador = CursoControlador()
         self.actualizar_treeview()
+        self.treeview.bind("<Double-1>", self.on_treeview_select)
 
     def crear_labels(self):
         # Label nombre curso
@@ -40,7 +41,7 @@ class Ventana(tk.Frame):
     def crear_botones(self):
         self.btn_agregar = tk.Button(self, text="Agregar curso", command=self.vista_agregar_curso)
         self.btn_agregar.grid(row=5, column=0, pady=5)
-        self.btn_actualizar = tk.Button(self, text="Actualizar curso", command=None)
+        self.btn_actualizar = tk.Button(self, text="Actualizar curso", command=self.vista_actualizar_curso)
         self.btn_actualizar.grid(row=5, column=1, pady=5)
         self.btn_eliminar = tk.Button(self, text="Eliminar", command=self.vista_eliminar_curso)
         self.btn_eliminar.grid(row=5, column=2, pady=5)
@@ -77,6 +78,8 @@ class Ventana(tk.Frame):
 
         # cargar cursos desde el controlador
         cursos = self.cursoControlador.obtener_cursos()
+
+        # Insertar en el treeview
         for curso in cursos:
             self.treeview.insert(
                 "",
@@ -90,7 +93,40 @@ class Ventana(tk.Frame):
                     curso.fechaCreacion,
                 ),
             )
-        pass
+
+    def vista_actualizar_curso(self):
+        if self.id_seleccionado is None:
+            messagebox.showerror("Error de selección", "Seleccione un curso del Treeview para actualizar.")
+            return
+
+        # Tomar datos de los inputs
+        nombreCurso = self.entry_nombre_curso.get()
+        autor = self.entry_autor.get()
+        precio = self.entry_precio.get()
+        duracion = self.entry_duracion.get()
+        fecha = self.entry_fecha.get()
+
+        try:
+            precio = float(precio)
+            duracion = int(duracion)
+        except ValueError:
+            messagebox.showerror("Error de validación", "Precio debe ser número y duración un entero")
+            return
+
+        # Llamar al controlador
+        exito, mensaje = self.cursoControlador.editar_curso(
+            self.id_seleccionado, nombreCurso, autor, precio, duracion, fecha
+        )
+
+        # Mostrar mensaje y actualizar treeview si es exitoso
+        if exito:
+            messagebox.showinfo("Éxito", mensaje)
+            self.actualizar_treeview()
+            self.limpiar_campos()
+            self.id_seleccionado = None
+        else:
+            messagebox.showerror("Error", mensaje)
+
 
     def vista_agregar_curso(self):
         #pasale los datos directamente, el contolador no deberia de hacer .get()
@@ -100,18 +136,29 @@ class Ventana(tk.Frame):
         duracion = self.entry_duracion.get()
         fecha = self.entry_fecha.get()
 
-        print(nombreCurso, autor, precio, duracion, fecha)
-        self.cursoControlador.crear_curso(nombreCurso, autor, precio, duracion, fecha)
+        try:
+            precio = float(precio)
+            duracion = int(duracion)
+        except ValueError:
+            messagebox.showerror("Error de validación", "Precio debe ser número y duración un entero")
+            return
 
-        self.actualizar_treeview()
-        self.limpiar_campos()
+        # Llamar al controlador
+        exito, mensaje = self.cursoControlador.crear_curso(nombreCurso, autor, precio, duracion, fecha)
+
+        if exito:
+            messagebox.showinfo("Éxito", mensaje)
+            self.actualizar_treeview()
+            self.limpiar_campos()
+        else:
+            messagebox.showerror("Error", mensaje)
     
     def limpiar_campos(self):
         self.entry_nombre_curso.delete(0, tk.END)        
         self.entry_autor.delete(0, tk.END)
         self.entry_precio.delete(0, tk.END)
         self.entry_duracion.delete(0, tk.END)
-        self.entry_duracion.delete(0, tk.END)
+        self.entry_fecha.delete(0, tk.END)
     
     def vista_eliminar_curso(self):
         seleccion = self.treeview.selection()  # devuelve tupla de items seleccionados en el Treeview
@@ -136,3 +183,21 @@ class Ventana(tk.Frame):
                 title="Error de selección",
                 message="Seleccione un curso para eliminarlo."
             )
+
+    def on_treeview_select(self, event):
+        seleccion = self.treeview.selection()
+        if seleccion:
+            item_id = seleccion[0]
+            valores = self.treeview.item(item_id, "values")
+            self.id_seleccionado = int(valores[0])
+            #rellenar inputs automáticamente
+            self.entry_nombre_curso.delete(0, tk.END)
+            self.entry_nombre_curso.insert(0, valores[1])
+            self.entry_autor.delete(0, tk.END)
+            self.entry_autor.insert(0, valores[2])
+            self.entry_precio.delete(0, tk.END)
+            self.entry_precio.insert(0, valores[3])
+            self.entry_duracion.delete(0, tk.END)
+            self.entry_duracion.insert(0, valores[4])
+            self.entry_fecha.delete(0, tk.END)
+            self.entry_fecha.insert(0, valores[5])
