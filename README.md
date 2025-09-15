@@ -11,6 +11,8 @@ Este proyecto es una aplicación de escritorio para **gestionar cursos**, desarr
 * **Peewee**: ORM ligero para manejar la base de datos SQLite.
 * **Tkinter**: Interfaz gráfica para agregar, ver, editar y eliminar cursos.
 * **MVC**: Arquitectura Modelo-Vista-Controlador para separar la lógica de negocio, la interfaz y los datos.
+* **tkcalendar**: Herramienta para usar calendario
+
 
 Cada curso tiene los siguientes campos:
 
@@ -32,13 +34,16 @@ Cada curso tiene los siguientes campos:
 
   * peewee
   * tkinter (viene con Python)
+  * tkcalendar
 
 Instalación de dependencias:
 
 ```bash
 pip install peewee
 ```
-
+```bash
+pip install tkcalendar
+```
 ---
 
 ## Estructura del proyecto
