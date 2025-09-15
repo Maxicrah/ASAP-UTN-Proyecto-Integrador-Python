@@ -1,6 +1,6 @@
 # CRUD de Cursos con Python, Peewee y Tkinter
 
-## Integrantes
+## Integrantes del proyecto
 - Maximiliano Ramiro Flores
 - Ramiro Galvan
 
