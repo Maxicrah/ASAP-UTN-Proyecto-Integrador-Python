@@ -78,7 +78,7 @@ python main.py
 
 * Agregar cursos llenando el formulario y presionando "Agregar Curso".
 * Ver todos los cursos en la lista.
-* Editar un curso (en futuras versiones puede implementarse).
-* Eliminar un curso (en futuras versiones puede implementarse).
+* Editar un curso (para realizar esta operacion se debe seleccionar un registro del treeview con doble click).
+* Eliminar un curso (para realizar esta operación se debe seleccionar un registro del treeview).
 
 ---
