@@ -53,7 +53,7 @@ pip install tkcalendar
 ├── models.py        # Define la tabla Curso y la conexión a la DB
 ├── controllers.py   # Lógica CRUD de los cursos
 ├── views.py         # Interfaz gráfica con Tkinter
-├── main.py          # Punto de entrada de la aplicación
+├── ventana-principal.py # Punto de entrada de la aplicación
 └── cursos.db        # Base de datos SQLite generada automáticamente
 ```
 
@@ -71,7 +71,7 @@ cd ASAP-UTN-Proyecto-Integrador-Python
 2. Ejecutar la aplicación:
 
 ```bash
-python main.py
+python ventana-principal.py
 ```
 
 3. Usar la interfaz para:
